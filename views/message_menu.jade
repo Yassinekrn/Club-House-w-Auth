@@ -1,0 +1,29 @@
+h1 Messages Menu
+
+if (user && user.full_name)
+    p Welcome to the messages menu #{user.full_name}
+    if (user && user.membership_status === "Member" || user && user.admin)
+        a(href="/messages/create") Create a new message
+    br
+    a(href="/auth/logout") Log Out
+else
+    p Welcome to the messages menu
+    p Please log in or sign up
+    a(href="/auth/login") Log In
+    br
+    a(href="/auth/signup") Sign Up
+
+if(messages && messages.length > 0)
+    ul
+        each message in messages
+            li
+                h3 #{message.title}
+            if (user && user.admin || user && user.membership_status == "Member")
+                li timestamp #{message.timestamp}
+                li Creator: #{message.creator.full_name}
+            if (user && user.admin)
+                form(action="/messages/#{message.id}/delete", method="GET")
+                    button Delete
+            p #{message.content}
+else
+    p No messages to display
